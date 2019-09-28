@@ -1,12 +1,23 @@
 import React from 'react';
+import {
+  getImages,
+} from './google-images';
 
-function App() {
-  return (
-    <div className="app">
+export default class App extends React.Component {
+
+  onInputChange = e => this.setState({ [e.target.name]: e.target.value });
+
+  onQueryButtonClicked = () => {
+    getImages(this.state.query);
+  };
 
 
-    </div>
-  );
+  render() {
+    return (
+      <div className="app">
+        <input name="query" type="text" onChange={this.onInputChange} />
+        <button onClick={this.onQueryButtonClicked}>Search!</button>
+      </div>
+    );
+  }
 }
-
-export default App;
