@@ -24,8 +24,12 @@ class ImageGridItem extends React.Component {
   onClick = () => this.props.onClick(this.props.imgUrl);
 
   render() {
-    return <div className="image-grid-item">
-      <img src={this.props.imgUrl} onClick={this.onClick} className={this.props.selected ? 'selected' : ''} />
+    let classNames = ['image-grid-item'];
+    if (this.props.selected) {
+      classNames.push('selected');
+    }
+    return <div className={classNames.join(' ')}>
+      <img src={this.props.imgUrl} onClick={this.onClick}/>
     </div>
   }
 

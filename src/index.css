@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .image-grid {
   display: flex;
   flex-wrap: wrap;
@@ -11,6 +15,11 @@
   max-width: 100%;
 }
 
-.image-grid :not(.selected) {
+.image-grid-item.selected {
+  border: 0.5em solid lightgreen;
+}
+
+.image-grid-item:not(.selected) {
   opacity: 0.7;
+  border: 0.5em solid red;
 }
