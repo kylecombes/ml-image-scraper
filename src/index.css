@@ -10,3 +10,7 @@
 .image-grid-item img {
   max-width: 100%;
 }
+
+.image-grid :not(.selected) {
+  opacity: 0.7;
+}

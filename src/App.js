@@ -9,6 +9,7 @@ export default class App extends React.Component {
   state = {
     imgUrls: [],
     query: '',
+    selectedImages: new Set(),
   };
 
   onInputChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -18,6 +19,15 @@ export default class App extends React.Component {
       .then(imgUrls => this.setState({ imgUrls }));
   };
 
+  imageSelected = imgUrl => {
+    let selectedImages = new Set([...this.state.selectedImages]);
+    if (selectedImages.has(imgUrl)) {
+      selectedImages.delete(imgUrl);
+    } else {
+      selectedImages.add(imgUrl);
+    }
+    this.setState({ selectedImages });
+  };
 
   render() {
     return (
@@ -26,7 +36,7 @@ export default class App extends React.Component {
           <input name="query" type="text" value={this.state.query} onChange={this.onInputChange} />
           <button onClick={this.onQueryButtonClicked}>Search!</button>
         </div>
-        <ImageGrid images={this.state.imgUrls} />
+        <ImageGrid images={this.state.imgUrls} selectedImages={this.state.selectedImages} imageClick={this.imageSelected} />
       </div>
     );
   }
