@@ -11,6 +11,7 @@ export default class ImageGrid extends React.Component {
             key={idx}
             onClick={this.props.imageClick}
             selected={this.props.selectedImages.has(imgUrl)}
+            focused={idx === this.props.focusedIdx}
           />
           ))}
       </div>
@@ -27,6 +28,9 @@ class ImageGridItem extends React.Component {
     let classNames = ['image-grid-item'];
     if (this.props.selected) {
       classNames.push('selected');
+    }
+    if (this.props.focused) {
+      classNames.push('focused');
     }
     return <div className={classNames.join(' ')}>
       <img src={this.props.imgUrl} onClick={this.onClick}/>

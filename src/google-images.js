@@ -18,7 +18,6 @@ export const getImages = (query, number=100) => {
           for (let i = 0; i < images.length; ++i) {
             res.push(images[i].original);
           }
-          console.log('Finished loop')
         }));
     }
     await Promise.all(queryPromises);

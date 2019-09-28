@@ -8,6 +8,7 @@ export default class App extends React.Component {
 
   state = {
     imgUrls: [],
+    focusedImageIndex: 0,
     query: '',
     selectedImages: new Set(),
   };
@@ -20,23 +21,67 @@ export default class App extends React.Component {
   };
 
   imageSelected = imgUrl => {
-    let selectedImages = new Set([...this.state.selectedImages]);
-    if (selectedImages.has(imgUrl)) {
-      selectedImages.delete(imgUrl);
+    if (this.state.selectedImages.has(imgUrl)) {
+      this.markImageDeselected(imgUrl);
     } else {
-      selectedImages.add(imgUrl);
+      this.markImageSelected(imgUrl);
     }
+  };
+
+  markImageSelected = imgUrl => {
+    let selectedImages = new Set([...this.state.selectedImages]);
+    selectedImages.add(imgUrl);
     this.setState({ selectedImages });
+  };
+
+  markImageDeselected = imgUrl => {
+    let selectedImages = new Set([...this.state.selectedImages]);
+    selectedImages.delete(imgUrl);
+    this.setState({ selectedImages });
+  };
+
+  onKeyDown = e => {
+    console.log(e.key);
+    switch (e.key) {
+      case 'Y':
+      case 'y':
+      case 'Enter':
+        this.markImageSelected(this.state.imgUrls[this.state.focusedImageIndex]);
+        this.setState({ focusedImageIndex: this.state.focusedImageIndex+1 });
+        e.stopPropagation();
+        break;
+      case 'N':
+      case 'n':
+        this.markImageDeselected(this.state.imgUrls[this.state.focusedImageIndex]);
+        this.setState({ focusedImageIndex: this.state.focusedImageIndex+1 });
+        e.stopPropagation();
+        break;
+      case 'ArrowLeft':
+        this.setState({ focusedImageIndex: Math.max(this.state.focusedImageIndex-1, 0)});
+        e.stopPropagation();
+        break;
+      case 'ArrowRight':
+        this.setState({ focusedImageIndex: Math.max(this.state.focusedImageIndex+1, this.state.imgUrls.length-1)});
+        e.stopPropagation();
+        break;
+      default:
+    }
   };
 
   render() {
     return (
-      <div className="app">
+      <div className="app" onKeyDown={this.onKeyDown} tabIndex={0}>
         <div className="query-container">
           <input name="query" type="text" value={this.state.query} onChange={this.onInputChange} />
           <button onClick={this.onQueryButtonClicked}>Search!</button>
+          <textarea readOnly={true} value={[...this.state.selectedImages].join(',')} />
         </div>
-        <ImageGrid images={this.state.imgUrls} selectedImages={this.state.selectedImages} imageClick={this.imageSelected} />
+        <ImageGrid
+          images={this.state.imgUrls}
+          focusedIdx={this.state.focusedImageIndex}
+          selectedImages={this.state.selectedImages}
+          imageClick={this.imageSelected}
+        />
       </div>
     );
   }

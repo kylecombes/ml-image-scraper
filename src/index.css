@@ -2,6 +2,12 @@
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  margin: 0;
+}
+
 .image-grid {
   display: flex;
   flex-wrap: wrap;
@@ -20,6 +26,21 @@
 }
 
 .image-grid-item:not(.selected) {
-  opacity: 0.7;
   border: 0.5em solid red;
+}
+
+.image-grid-item:not(.selected) img {
+  opacity: 0.7;
+}
+
+.image-grid-item.focused {
+  border: 0.5em solid cornflowerblue;;
+}
+
+.query-container {
+  display: flex;
+}
+
+.query-container textarea {
+  flex-grow: 1;
 }
