@@ -4,13 +4,26 @@
 
 html,
 body,
-#root {
+#root,
+.app {
   margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.image-container {
+  overflow: hidden;
+}
+
+.image-container > * {
+  width: 50%;
+  float: left;
 }
 
 .image-grid {
   display: flex;
   flex-wrap: wrap;
+  overflow: auto;
 }
 
 .image-grid-item {
@@ -43,4 +56,9 @@ body,
 
 .query-container textarea {
   flex-grow: 1;
+}
+
+.image-container > img {
+  max-width: 100%;
+  max-height: 100%;
 }

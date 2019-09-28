@@ -16,6 +16,11 @@ export default class App extends React.Component {
   onInputChange = e => this.setState({ [e.target.name]: e.target.value });
 
   onQueryButtonClicked = () => {
+    this.setState({
+      imgUrs: [],
+      focusedImageIndex: 0,
+      selectedImages: new Set(),
+    });
     getImages(this.state.query)
       .then(imgUrls => this.setState({ imgUrls }));
   };
@@ -41,19 +46,19 @@ export default class App extends React.Component {
   };
 
   onKeyDown = e => {
-    console.log(e.key);
+    const numImages = this.state.imgUrls.length;
     switch (e.key) {
       case 'Y':
       case 'y':
       case 'Enter':
         this.markImageSelected(this.state.imgUrls[this.state.focusedImageIndex]);
-        this.setState({ focusedImageIndex: this.state.focusedImageIndex+1 });
+        this.setState({ focusedImageIndex: Math.min(this.state.focusedImageIndex+1, numImages-1) });
         e.stopPropagation();
         break;
       case 'N':
       case 'n':
         this.markImageDeselected(this.state.imgUrls[this.state.focusedImageIndex]);
-        this.setState({ focusedImageIndex: this.state.focusedImageIndex+1 });
+        this.setState({ focusedImageIndex: Math.min(this.state.focusedImageIndex+1, numImages-1) });
         e.stopPropagation();
         break;
       case 'ArrowLeft':
@@ -61,7 +66,7 @@ export default class App extends React.Component {
         e.stopPropagation();
         break;
       case 'ArrowRight':
-        this.setState({ focusedImageIndex: Math.max(this.state.focusedImageIndex+1, this.state.imgUrls.length-1)});
+        this.setState({ focusedImageIndex: Math.min(this.state.focusedImageIndex+1, numImages-1)});
         e.stopPropagation();
         break;
       default:
@@ -76,12 +81,15 @@ export default class App extends React.Component {
           <button onClick={this.onQueryButtonClicked}>Search!</button>
           <textarea readOnly={true} value={[...this.state.selectedImages].join(',')} />
         </div>
-        <ImageGrid
-          images={this.state.imgUrls}
-          focusedIdx={this.state.focusedImageIndex}
-          selectedImages={this.state.selectedImages}
-          imageClick={this.imageSelected}
-        />
+        <div className="image-container">
+          <ImageGrid
+            images={this.state.imgUrls}
+            focusedIdx={this.state.focusedImageIndex}
+            selectedImages={this.state.selectedImages}
+            imageClick={this.imageSelected}
+          />
+          <img src={this.state.imgUrls[this.state.focusedImageIndex]} className="preview-img" />
+        </div>
       </div>
     );
   }
